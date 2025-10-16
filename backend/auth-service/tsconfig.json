@@ -1,0 +1,22 @@
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "strict": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    // "allowImportingTsExtensions": true
+    "ignoreDeprecations": "6.0"
+  },
+  // "ts-node": {
+  //   "esm": true,
+  //   "experimentalSpecifierResolution": "node"
+  // },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}
