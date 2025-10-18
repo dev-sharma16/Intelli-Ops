@@ -1,3 +1,5 @@
+import { JwtPayload } from "jsonwebtoken"
+
 export interface IProject {
     // projectId: string,
     name: string,
@@ -12,3 +14,9 @@ export interface IUser {
     projectNo: number;
     projects: IProject[];
 };
+
+export interface IDecodedToken extends JwtPayload{
+    id: string,
+    name: string,
+    email: string,
+}
