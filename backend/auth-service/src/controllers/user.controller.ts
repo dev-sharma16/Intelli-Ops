@@ -54,6 +54,8 @@ const registerUser = async (req: Request, res: Response) => {
 
     res.cookie("token", token, cookieOptions);
 
+    res.setHeader("Authorization", `Bearer ${token}`);
+
     return res.status(201).json({
       success: true,
       message: "User registered successfully",
@@ -88,7 +90,8 @@ const loginUser = async (req: Request, res: Response) => {
     const checkPassword = await bcrypt.compare(password, user.password)
     if(!checkPassword){
       return res.status(401).json({
-        
+        success: false,
+        message: "Invalid email or password"
       })
     }
     
@@ -110,6 +113,8 @@ const loginUser = async (req: Request, res: Response) => {
 
     res.cookie("token", token, cookieOptions);
 
+    res.setHeader("Authorization", `Bearer ${token}`);
+
     return res.status(200).json({
       success: true,
       message: "Login successfull",
@@ -129,25 +134,51 @@ const loginUser = async (req: Request, res: Response) => {
 }
 
 const getCurrentUser = async (req: Request, res: Response) => {
-  const user = (req as any).user
-
-  const currentUser = await User.findById(user.id);
-  if(!currentUser){
-    return res.status(404).json({
-      succcess: false, 
-      message: "No user found"
+  try {
+    const user = (req as any).user
+  
+    const currentUser = await User.findById(user.id).select("-password");
+    if(!currentUser){
+      return res.status(404).json({
+        succcess: false, 
+        message: "No user found"
+      })
+    }
+  
+    return res.status(200).json({
+      sucess: true,
+      message: "User fetched successfully",
+      user: currentUser
+    })
+  } catch (error) {
+    console.error("Internal server Error while fetching an user :",error)
+    return res.status(500).json({
+      success: false,
+      message: "Server error while Fetching an User"
     })
   }
+}
 
-  return res.status(200).json({
-    sucess: true,
-    message: "User fetched successfully",
-    user: currentUser
-  })
+const logoutUser = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie("token", cookieOptions);
+
+    return res.status(200).json({
+      success: true,
+      message: "User logged out successfully",
+    });
+  } catch (error) {
+    console.error("Error in logout controller:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error while logging out",
+    });
+  }
 }
 
 export default {
   registerUser,
   loginUser,
-  getCurrentUser
+  getCurrentUser,
+  logoutUser
 }
