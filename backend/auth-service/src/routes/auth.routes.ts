@@ -19,4 +19,10 @@ router.post(
 
 router.get('/', authMiddleware, authControllers.getCurrentUser);
 
+router.get(
+  '/logout',
+  authMiddleware,
+  authControllers.logoutUser
+)
+
 export default router;
