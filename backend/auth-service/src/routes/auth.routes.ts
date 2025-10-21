@@ -19,7 +19,7 @@ router.post(
 
 router.get('/', authMiddleware, authControllers.getCurrentUser);
 
-router.get(
+router.post(
   '/logout',
   authMiddleware,
   authControllers.logoutUser

@@ -140,13 +140,13 @@ const getCurrentUser = async (req: Request, res: Response) => {
     const currentUser = await User.findById(user.id).select("-password");
     if(!currentUser){
       return res.status(404).json({
-        succcess: false, 
+        success: false, 
         message: "No user found"
       })
     }
   
     return res.status(200).json({
-      sucess: true,
+      success: true,
       message: "User fetched successfully",
       user: currentUser
     })
