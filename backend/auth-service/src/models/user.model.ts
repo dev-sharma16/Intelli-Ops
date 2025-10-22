@@ -15,6 +15,7 @@ const userSchema = new Schema<IUserModel>(
         name: { type: String, required: true },
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
+        apiKey : {type: String, required: true},
         projectNo: {
             type: Number,
             default: 0,
