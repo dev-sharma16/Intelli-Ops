@@ -1,0 +1,22 @@
+{
+  "name": "intelliops-logs-sdk",
+  "version": "1.0.0",
+  "description": "Official IntelliOps Logs SDK for Node.js applications",
+  "main": "dist/index.js",              
+  "types": "dist/index.d.ts",           
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"   
+  },
+  "keywords": ["logging", "sdk", "intelliops", "nodejs", "monitoring"],
+  "author": "Dev Sharma",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.12.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.9.1",
+    "typescript": "^5.9.3",
+    "ts-node": "^10.9.2"
+  }
+}
