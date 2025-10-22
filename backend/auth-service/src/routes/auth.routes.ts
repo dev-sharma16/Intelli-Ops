@@ -25,4 +25,6 @@ router.post(
   authControllers.logoutUser
 )
 
+router.post('/verfiyApiKey', authControllers.verifyApiKey);
+
 export default router;

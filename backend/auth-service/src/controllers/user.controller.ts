@@ -176,9 +176,40 @@ const logoutUser = async (req: Request, res: Response) => {
   }
 }
 
+const verifyApiKey = async (req: Request, res: Response) => {
+  try {
+    const { apiKey } = req.body;
+    if (!apiKey) return res.status(400).json({ 
+      success: false, 
+      message: 'API key is required' 
+    });
+
+    const user = await User.findOne({ apiKey });
+    if (!user) return res.status(401).json({ 
+      success: false, 
+      valid: false, 
+      message: 'Invalid API key' 
+    });
+
+    return res.json({ 
+      success: true, 
+      valid: true, 
+      userId: user._id, 
+      email: user.email 
+    });
+  } catch (error) {
+    console.error("Error in logout controller:", error);
+    res.status(500).json({ 
+      success: false, 
+      message: "Server error while verfiying the ApiKey" 
+    });
+  }
+}
+
 export default {
   registerUser,
   loginUser,
   getCurrentUser,
-  logoutUser
+  logoutUser,
+  verifyApiKey
 }
