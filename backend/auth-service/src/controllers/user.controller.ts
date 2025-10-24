@@ -184,7 +184,7 @@ const verifyApiKey = async (req: Request, res: Response) => {
       message: 'API key is required' 
     });
 
-    const user = await User.findOne({ apiKey });
+    const user = await User.findOne({ apiKey }).select("-password");
     if (!user) return res.status(401).json({ 
       success: false, 
       valid: false, 
@@ -194,8 +194,9 @@ const verifyApiKey = async (req: Request, res: Response) => {
     return res.json({ 
       success: true, 
       valid: true, 
-      userId: user._id, 
-      email: user.email 
+      id: user._id, 
+      name: user.name,
+      email: user.email,
     });
   } catch (error) {
     console.error("Error in logout controller:", error);

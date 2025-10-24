@@ -6,12 +6,12 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    // "moduleResolution": "node",
     "strict": true,
     "skipLibCheck": true,
     "sourceMap": true,
     // "allowImportingTsExtensions": true
-    "ignoreDeprecations": "6.0"
+    // "ignoreDeprecations": "6.0"
   },
   // "ts-node": {
   //   "esm": true,
