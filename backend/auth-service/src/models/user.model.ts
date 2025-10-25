@@ -5,6 +5,7 @@ export interface IUserModel extends IUser, Document {};
 
 const projectSchema = new Schema<IProject>(
     {
+        projectId: { type: String, required: true },
         name: { type: String, required: true },
         createdAt: { type: Date, required: true },
     }

@@ -2,7 +2,7 @@ import { JwtPayload } from "jsonwebtoken"
 import { ObjectId } from "mongoose";
 
 export interface IProject {
-    // projectId: string,
+    projectId: string,
     name: string,
     createdAt: Date
 };
