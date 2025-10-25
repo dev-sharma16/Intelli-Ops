@@ -5,6 +5,7 @@ import authMiddleware from '../middlewares/auth.middleware';
 
 const router = Router();
 
+//* Auth Routes
 router.post(
   '/register',
   validators.registerValidationRules,
@@ -26,5 +27,30 @@ router.post(
 )
 
 router.post('/verfiyApiKey', authControllers.verifyApiKey);
+
+//* Project Routes
+router.post(
+  '/poject',
+  authMiddleware,
+  authControllers.createProject
+)
+
+router.get(
+  '/project',
+  authMiddleware,
+  authControllers.getAllProjects
+)
+
+router.get(
+  '/project/:projectId',
+  authMiddleware,
+  authControllers.getProjectById
+)
+
+router.delete(
+  '/project/:projectId',
+  authMiddleware,
+  authControllers.deleteProject
+)
 
 export default router;

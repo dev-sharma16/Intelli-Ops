@@ -3,6 +3,7 @@ import jwt, { SignOptions } from 'jsonwebtoken';
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import { User } from '../models/user.model';
+import { v4 as uuidv4 } from "uuid";
 
 const cookieOptions: CookieOptions = {
   httpOnly: true,
@@ -11,6 +12,7 @@ const cookieOptions: CookieOptions = {
   maxAge: 7 * 24 * 60 * 60 * 1000,
 }
 
+//* Auth Api Controllers
 const registerUser = async (req: Request, res: Response) => {
   try {
     const {name, email, password} = req.body;
@@ -207,10 +209,146 @@ const verifyApiKey = async (req: Request, res: Response) => {
   }
 }
 
+//todo : move the entire project related work in the project service
+//* Projects Api Controllers
+const createProject = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id; 
+    const { name } = req.body;
+
+    if (!name) return res.status(400).json({ 
+      success: false,
+      message: "Project name is required" 
+    });
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ 
+      success: false, 
+      message: "User not found" 
+    });
+
+    if (user.projects.length >= 2) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "You can only create up to 2 projects" 
+      });
+    }
+
+    const newProject = {
+      projectId: uuidv4(),
+      name,
+      createdAt: new Date(),
+    };
+
+    user.projects.push(newProject);
+    await user.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Project created successfully",
+      project: newProject,
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false, 
+      message: "Internal Server Error", error 
+    });
+  }
+};
+
+const getAllProjects = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ 
+      success: false, 
+      message: "User not found" 
+    });
+
+    res.status(200).json({ 
+      success: true, 
+      projects: user.projects 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false, 
+      message: "Internal Server Error", 
+      error 
+    });
+  }
+};
+
+const getProjectById = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    const { projectId } = req.params;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ 
+      success: false, 
+      message: "User not found" 
+    });
+
+    const project = user.projects.find((p) => p.projectId === projectId);
+    if (!project) return res.status(404).json({ 
+      success: false, 
+      message: "Project not found" 
+    });
+
+    res.status(200).json({ project });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false, 
+      message: "Internal Server Error", 
+      error 
+    });
+  }
+};
+
+const deleteProject = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    const { projectId } = req.params;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ 
+      success: false, 
+      message: "User not found" 
+    });
+
+    const projectIndex = user.projects.findIndex((p) => p.projectId === projectId);
+    if (projectIndex === -1) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Project not found" 
+      });
+    }
+
+    user.projects.splice(projectIndex, 1);
+    await user.save();
+
+    res.status(200).json({ 
+      success: true, 
+      message: "Project deleted successfully" 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false, 
+      message: "Internal Server Error", 
+      error 
+    });
+  }
+};
+
 export default {
   registerUser,
   loginUser,
   getCurrentUser,
   logoutUser,
-  verifyApiKey
+  verifyApiKey,
+  createProject,
+  getAllProjects,
+  getProjectById,
+  deleteProject,
 }
