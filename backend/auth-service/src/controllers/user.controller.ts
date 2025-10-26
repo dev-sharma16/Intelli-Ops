@@ -161,6 +161,32 @@ const getCurrentUser = async (req: Request, res: Response) => {
   }
 }
 
+const getUserById = async (req: Request, res: Response ) => {
+  try {
+    const { userId } = req.body
+
+    const user = await User.findById(userId).select("-password");
+    if(!user){
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      })
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "User fetched successfully",
+      user: user
+    })
+  } catch (error) {
+    console.error("Internal server Error while fetching an user :",error)
+    return res.status(500).json({
+      success: false,
+      message: "Server error while Fetching an User"
+    })
+  }
+}
+
 const logoutUser = async (req: Request, res: Response) => {
   try {
     res.clearCookie("token", cookieOptions);
@@ -345,6 +371,7 @@ export default {
   registerUser,
   loginUser,
   getCurrentUser,
+  getUserById,
   logoutUser,
   verifyApiKey,
   createProject,

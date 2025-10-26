@@ -2,6 +2,7 @@ import { Router } from 'express';
 import authControllers from './../controllers/user.controller';
 import validators from '../middlewares/validation.middleware';
 import authMiddleware from '../middlewares/auth.middleware';
+import { verifyServiceKey } from "../middlewares/serviceAuth.middleware"
 
 const router = Router();
 
@@ -19,6 +20,8 @@ router.post(
 );
 
 router.get('/', authMiddleware, authControllers.getCurrentUser);
+
+router.get('/:userId', verifyServiceKey, authControllers.getUserById);
 
 router.post(
   '/logout',
