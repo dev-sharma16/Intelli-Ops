@@ -1,8 +1,8 @@
 import axios from 'axios';
-
-export const alertTrigger = async (log: any) => {
+export const aiTrigger = async (log: any) => {
   try {
-    await axios.post(`${process.env.ALERT_SERVICE_URL}/alerts/create`, 
+    await axios.post(
+      `${process.env.AI_SERVICE_URL}/analyse`,
       {
         projectId: log.projectId,
         userId: log.userId,
@@ -13,8 +13,8 @@ export const alertTrigger = async (log: any) => {
       },
       {
         headers: {
-          'x-service-key' : process.env.SERVICE_SECRET
-        }
+          'x-service-key': process.env.SERVICE_SECRET,
+        },
       }
     );
   } catch (err: any) {

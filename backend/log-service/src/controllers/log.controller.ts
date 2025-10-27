@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Log } from '../models/log.model';
-import { triggerAlert } from '../services/alertTrigger';
+import { alertTrigger, aiTrigger } from '../services/index';
+import { alertQueue, aiQueue } from '../queue/index';
 
 // Create and store a new log
 const createLog = async (req: Request, res: Response) => {
@@ -21,9 +22,12 @@ const createLog = async (req: Request, res: Response) => {
       meta,
     });
 
-    // trigger alert if log level is error or critical
+    //trigger to ai service queue
+    await aiQueue.add('analyze-log', aiTrigger(log));
+
+    // trigger alert if log level is error or critical and it to alert queue
     if (['error', 'critical'].includes(log.level)) {
-      triggerAlert(log);
+      await alertQueue.add('alert-log', alertTrigger(log));
     }
 
     return res.status(201).json({
