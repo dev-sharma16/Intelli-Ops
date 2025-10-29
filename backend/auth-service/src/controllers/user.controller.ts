@@ -206,7 +206,7 @@ const logoutUser = async (req: Request, res: Response) => {
 
 const verifyApiKey = async (req: Request, res: Response) => {
   try {
-    const { apiKey } = req.body;
+    const apiKey  = req.headers['x-api-key'];
     if (!apiKey) return res.status(400).json({ 
       success: false, 
       message: 'API key is required' 
@@ -259,7 +259,7 @@ const createProject = async (req: Request, res: Response) => {
         message: "You can only create up to 2 projects" 
       });
     }
-
+    //todo : update project count(projectNo) when new project added or deleted
     const newProject = {
       projectId: uuidv4(),
       name,

@@ -29,7 +29,7 @@ router.post(
   authControllers.logoutUser
 )
 
-router.post('/verfiyApiKey', authControllers.verifyApiKey);
+router.post('/verifyApiKey', verifyServiceKey, authControllers.verifyApiKey);
 
 //* Project Routes
 router.post(
