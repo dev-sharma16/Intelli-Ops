@@ -1,2 +1,2 @@
-export * from './aiQueue.js';
-export * from './alertQueue.js';
+export * from './aiQueue';
+export * from './alertQueue';
