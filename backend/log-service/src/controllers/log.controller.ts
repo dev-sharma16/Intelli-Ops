@@ -25,7 +25,14 @@ const createLog = async (req: Request, res: Response) => {
     });
 
     //trigger to ai service queue
-    await aiQueue.add('analyze-log', aiTrigger(log));
+    await aiQueue.add('analyze-log', {
+      projectId: log.projectId,
+      userId: log.userId,
+      message: log.message,
+      level: log.level,
+      source: log.source,
+      timestamp: log.createdAt,
+    });
 
     // trigger alert if log level is error or critical and it to alert queue
     if (['error', 'critical'].includes(log.level)) {

@@ -1,16 +1,9 @@
 import axios from 'axios';
-export const aiTrigger = async (log: any) => {
+export const aiTrigger = async (logData: any) => {
   try {
     await axios.post(
       `${process.env.AI_SERVICE_URL}/analyse`,
-      {
-        projectId: log.projectId,
-        userId: log.userId,
-        message: log.message,
-        level: log.level,
-        source: log.source,
-        timestamp: log.createdAt,
-      },
+      logData,
       {
         headers: {
           'x-service-key': process.env.SERVICE_SECRET,
