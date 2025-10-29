@@ -10,8 +10,15 @@ export const verifyApiKey = async ( req: Request, res: Response, next: NextFunct
 
   try {
     const response = await axios.post(
-      `${process.env.AUTH_SERVICE_URL}/verifyApiKey`,
-      { apiKey }
+      // `${process.env.AUTH_SERVICE_URL}/verifyApiKey`
+      "http://localhost:3000/api/auth/verifyApiKey",
+      {},
+      {
+        headers: {
+          'x-api-key': apiKey,
+          'x-service-key': process.env.SERVICE_SECRET || ''
+        }
+      }
     );
 
     if (!response.data.valid) {

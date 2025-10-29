@@ -6,7 +6,7 @@ import { alertQueue, aiQueue } from '../queue/index';
 // Create and store a new log
 const createLog = async (req: Request, res: Response) => {
   try {
-    const { projectId, level, message, source, meta } = req.body;
+    const { userId, projectId, level, message, source, meta } = req.body;
     const user = (req as any).user;
 
     if (!projectId || !level || !message || !source || !meta) {
@@ -14,7 +14,9 @@ const createLog = async (req: Request, res: Response) => {
     }
 
     const log = await Log.create({
-      userId: user.userId,
+      // userId: user.userId, 
+      // //todo : log controler dont have an middleware to connect the user object to the req
+      userId,
       projectId,
       level,
       message,
