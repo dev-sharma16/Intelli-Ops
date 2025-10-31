@@ -163,7 +163,7 @@ const getCurrentUser = async (req: Request, res: Response) => {
 
 const getUserById = async (req: Request, res: Response ) => {
   try {
-    const { userId } = req.body
+    const { userId } = req.params
 
     const user = await User.findById(userId).select("-password");
     if(!user){
