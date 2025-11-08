@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const alertTrigger = async (log: any) => {
   try {
-    await axios.post(`${process.env.ALERT_SERVICE_URL}/alerts/create`, 
+    await axios.post(`${process.env.ALERT_SERVICE_URL}/create`, 
       {
         projectId: log.projectId,
         userId: log.userId,

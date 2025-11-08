@@ -15,7 +15,7 @@ const createLog = async (req: Request, res: Response) => {
 
     const log = await Log.create({
       // userId: user.userId, 
-      // //todo : log controler dont have an middleware to connect the user object to the req
+      // todo : log controler dont have an middleware to connect the user object to the req
       userId,
       projectId,
       level,
@@ -24,8 +24,8 @@ const createLog = async (req: Request, res: Response) => {
       meta,
     });
 
-    //trigger to ai service queue
-    await aiQueue.add('analyze-log', {
+    // ai service queue
+    await aiQueue.add('analyze-log',{
       projectId: log.projectId,
       userId: log.userId,
       message: log.message,
@@ -34,9 +34,16 @@ const createLog = async (req: Request, res: Response) => {
       timestamp: log.createdAt,
     });
 
-    // trigger alert if log level is error or critical and it to alert queue
+    // add alert in alert queue if log level is error or critical 
     if (['error', 'critical'].includes(log.level)) {
-      await alertQueue.add('alert-log', alertTrigger(log));
+      await alertQueue.add('alert-log',{
+        projectId: log.projectId,
+        userId: log.userId,
+        message: log.message,
+        level: log.level,
+        source: log.source,
+        timestamp: log.createdAt,
+      });
     }
 
     return res.status(201).json({
