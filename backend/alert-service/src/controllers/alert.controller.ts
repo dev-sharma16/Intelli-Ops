@@ -15,8 +15,15 @@ const createAlert = async (req: Request, res: Response) => {
       source,
       timestamp,
     });
-    
-    const userRes = await axios.get(`${process.env.AUTH_SERVICE_URL}/${userId}`); 
+
+    const userRes = await axios.get(
+      `${process.env.AUTH_SERVICE_URL}/${userId}`,
+      {
+        headers: {
+          "x-service-key": process.env.SERVICE_SECRET, 
+        },
+      }
+    ); 
     const userEmail = userRes.data.user.email;
 
     if (['error', 'critical'].includes(level)) {
@@ -36,7 +43,7 @@ const createAlert = async (req: Request, res: Response) => {
       alert 
     });
   } catch (err: any) {
-    console.error('Error creating alert:', err.message);
+    console.error('Error creating alert:', err);
     return res.status(500).json({ 
       success: false, 
       error: err.message 
