@@ -67,3 +67,14 @@ export class IntelliOpsLogger {
     return this.sendLog({ level: "critical", message, projectId: this.projectId, ...rest });
   }
 }
+
+export function createIntelliOpsClient() {
+  const apiKey = process.env.INTELLIOPS_API_KEY;
+  const projectId = process.env.INTELLIOPS_PROJECT_ID;
+
+  if (!apiKey || !projectId) {
+    throw new Error("Missing IntelliOps environment variables: INTELLIOPS_API_KEY or INTELLIOPS_PROJECT_ID");
+  }
+
+  return new IntelliOpsLogger(apiKey, projectId);
+}

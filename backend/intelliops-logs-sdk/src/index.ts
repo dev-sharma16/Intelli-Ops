@@ -1,1 +1,1 @@
-export { IntelliOpsLogger } from "./logger"
+export { IntelliOpsLogger, createIntelliOpsClient } from "./logger"
