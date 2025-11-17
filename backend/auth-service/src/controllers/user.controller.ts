@@ -259,7 +259,7 @@ const createProject = async (req: Request, res: Response) => {
         message: "You can only create up to 2 projects" 
       });
     }
-    //todo : update project count(projectNo) when new project added or deleted
+    
     const newProject = {
       projectId: uuidv4(),
       name,
@@ -267,6 +267,7 @@ const createProject = async (req: Request, res: Response) => {
     };
 
     user.projects.push(newProject);
+    user.projectNo++;
     await user.save();
 
     res.status(201).json({
@@ -352,6 +353,7 @@ const deleteProject = async (req: Request, res: Response) => {
     }
 
     user.projects.splice(projectIndex, 1);
+    user.projectNo--;
     await user.save();
 
     res.status(200).json({ 
