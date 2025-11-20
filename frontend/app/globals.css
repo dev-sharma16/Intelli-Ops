@@ -1,34 +1,159 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
-/* @theme inline {
+@theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-} */
-
-@theme {
-  --color-text: #eae9fc ;
-  --color-background: #081726 ;
-  --color-primary: #00d9ff ;
-  --color-secondary: #142c48 ;
-  --color-accent: #01b1d0 ;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Custom theme colors */
+@theme {
+  --color-text: #eae9fc;
+  --color-background: #081726;
+  --color-primary: #00d9ff;
+  --color-secondary: #142c48;
+  --color-accent: #01b1d0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-poppins), sans-serif;;
+  font-family: var(--font-poppins), sans-serif;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* Override the default :root with your custom theme */
+:root {
+  --radius: 0.625rem;
+  
+  /* Map your custom colors to shadcn variables */
+  --background: #081726; /* your --color-background */
+  --foreground: #eae9fc; /* your --color-text */
+  
+  --card: #142c48; /* your --color-secondary */
+  --card-foreground: #eae9fc;
+  
+  --popover: #142c48;
+  --popover-foreground: #eae9fc;
+  
+  --primary: #00d9ff; /* your --color-primary */
+  --primary-foreground: #081726; /* dark text on bright cyan */
+  
+  --secondary: #142c48; /* your --color-secondary */
+  --secondary-foreground: #eae9fc;
+  
+  --muted: #142c48;
+  --muted-foreground: #94a3b8;
+  
+  --accent: #01b1d0; /* your --color-accent */
+  --accent-foreground: #eae9fc;
+  
+  --destructive: #ef4444;
+  --destructive-foreground: #eae9fc;
+  
+  --border: #1e3a5f; /* slightly lighter than secondary */
+  --input: #1e3a5f;
+  --ring: #00d9ff; /* your --color-primary for focus rings */
+  
+  /* Charts */
+  --chart-1: #00d9ff;
+  --chart-2: #01b1d0;
+  --chart-3: #142c48;
+  --chart-4: #0ea5e9;
+  --chart-5: #06b6d4;
+  
+  /* Sidebar */
+  --sidebar: #0a1929;
+  --sidebar-foreground: #eae9fc;
+  --sidebar-primary: #00d9ff;
+  --sidebar-primary-foreground: #081726;
+  --sidebar-accent: #142c48;
+  --sidebar-accent-foreground: #eae9fc;
+  --sidebar-border: #1e3a5f;
+  --sidebar-ring: #00d9ff;
+}
+
+/* .dark theme for dark mode toggle */
+.dark {
+  /* Keep the same as :root so dark mode doesn't change anything */
+  --background: #081726;
+  --foreground: #eae9fc;
+  --card: #142c48;
+  --card-foreground: #eae9fc;
+  --popover: #142c48;
+  --popover-foreground: #eae9fc;
+  --primary: #00d9ff;
+  --primary-foreground: #081726;
+  --secondary: #142c48;
+  --secondary-foreground: #eae9fc;
+  --muted: #142c48;
+  --muted-foreground: #94a3b8;
+  --accent: #01b1d0;
+  --accent-foreground: #eae9fc;
+  --destructive: #ef4444;
+  --destructive-foreground: #eae9fc;
+  --border: #1e3a5f;
+  --input: #1e3a5f;
+  --ring: #00d9ff;
+  --chart-1: #00d9ff;
+  --chart-2: #01b1d0;
+  --chart-3: #142c48;
+  --chart-4: #0ea5e9;
+  --chart-5: #06b6d4;
+  --sidebar: #0a1929;
+  --sidebar-foreground: #eae9fc;
+  --sidebar-primary: #00d9ff;
+  --sidebar-primary-foreground: #081726;
+  --sidebar-accent: #142c48;
+  --sidebar-accent-foreground: #eae9fc;
+  --sidebar-border: #1e3a5f;
+  --sidebar-ring: #00d9ff;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
